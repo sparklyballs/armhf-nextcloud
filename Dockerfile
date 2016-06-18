@@ -37,6 +37,7 @@ RUN \
 # install runtime packages
 RUN \
  apk add --no-cache \
+	apache2-utils \
 	curl \
 	ffmpeg \
 	libxml2 \
