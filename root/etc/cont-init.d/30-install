@@ -1,0 +1,12 @@
+#!/usr/bin/with-contenv bash
+
+if [ ! -e "/data/nextcloud/index.php" ]; then
+curl -o /tmp/nextcloud.zip -L \
+https://download.nextcloud.com/server/releases/nextcloud-"${NEXTCLOUD_VER}".zip
+cd /tmp
+unzip nextcloud.zip
+mv /tmp/nextcloud /data/nextcloud
+rm -f /tmp/nextcloud.zip
+fi
+
+chown -R abc:abc /data
