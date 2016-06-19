@@ -64,6 +64,7 @@ RUN \
 	php5-pdo_sqlite \
 	php5-posix \
 	php5-xml \
+	php5-xmlreader \
 	php5-zip \
 	php5-zlib \
 	samba \
