@@ -10,5 +10,4 @@ cd /tmp || true
 unzip nextcloud.zip
 mv /tmp/nextcloud "${NEXTCLOUD_PATH}"
 rm -f /tmp/nextcloud.zip
-/bin/bash /defaults/nextcloud-perms.sh
 fi

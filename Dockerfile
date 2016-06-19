@@ -1,4 +1,4 @@
-FROM sparklyballs/base-vanilla-armhf
+FROM sparklyballs/base-nginx-armhf
 MAINTAINER sparklyballs
 
 # set nextcloud version and path
@@ -14,7 +14,6 @@ RUN \
 	file \
 	g++ \
 	gcc \
-	git \
 	make \
 	libmemcached-dev \
 	php5-dev \
@@ -53,26 +52,22 @@ RUN \
 # install runtime packages
 RUN \
  apk add --no-cache \
-	apache2-utils \
 	curl \
 	ffmpeg \
 	libmemcached \
 	libxml2 \
-	php5-apache2 \
 	php5-apcu \
 	php5-bz2 \
 	php5-ctype \
 	php5-curl \
 	php5-dom \
 	php5-exif \
-	php5-fpm \
 	php5-ftp \
 	php5-gd \
 	php5-gmp \
 	php5-iconv \
 	php5-imap \
 	php5-intl \
-	php5-json \
 	php5-ldap \
 	php5-mcrypt \
 	php5-openssl \
@@ -95,6 +90,10 @@ RUN \
 RUN \
  echo "extension="smbclient.so"" >> /etc/php5/php.ini && \
  echo "extension="memcached.so"" >> /etc/php5/php.ini
+
+# configure php for nextcloud
+RUN \
+ echo "env[PATH] = /usr/local/bin:/usr/bin:/bin" >> /defaults/nginx-fpm.conf
 
 # add local files
 COPY root/ /
