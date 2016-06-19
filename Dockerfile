@@ -1,21 +1,37 @@
 FROM sparklyballs/base-vanilla-armhf
 MAINTAINER sparklyballs
 
-# set nextcloud version
+# set nextcloud version and path
 ENV NEXTCLOUD_VER="9.0.50"
+ENV WWW_ROOT="/config/www"
+ENV NEXTCLOUD_PATH="${WWW_ROOT}/nextcloud"
 
 # install build-dependencies
 RUN \
  apk add --no-cache --virtual=build-dependencies \
 	autoconf \
 	automake \
+	file \
 	g++ \
 	gcc \
 	git \
 	make \
+	libmemcached-dev \
 	php5-dev \
 	re2c \
-	samba-dev && \
+	samba-dev \
+	zlib-dev && \
+
+# fetch php memcached source
+ git clone https://github.com/php-memcached-dev/php-memcached /tmp/memcached && \
+
+# compile memcached
+ cd /tmp/memcached && \
+	phpize && \
+	./configure \
+		--disable-memcached-sasl && \
+	make && \
+	make install && \
 
 # fetch php smbclient source
  git clone git://github.com/eduardok/libsmbclient-php.git /tmp/smbclient && \
@@ -40,6 +56,7 @@ RUN \
 	apache2-utils \
 	curl \
 	ffmpeg \
+	libmemcached \
 	libxml2 \
 	php5-apache2 \
 	php5-apcu \
@@ -48,6 +65,7 @@ RUN \
 	php5-curl \
 	php5-dom \
 	php5-exif \
+	php5-fpm \
 	php5-ftp \
 	php5-gd \
 	php5-gmp \
@@ -71,10 +89,12 @@ RUN \
 	php5-zlib \
 	samba \
 	tar \
-	unzip && \
+	unzip
 
-# configure smbclient php extension
-echo "extension="smbclient.so"" >> /etc/php5/php.ini
+# configure php extensions
+RUN \
+ echo "extension="smbclient.so"" >> /etc/php5/php.ini && \
+ echo "extension="memcached.so"" >> /etc/php5/php.ini
 
 # add local files
 COPY root/ /
