@@ -1,4 +1,4 @@
-FROM sparklyballs/base-nginx-alpine
+FROM sparklyballs/base-nginx-armhf
 MAINTAINER sparklyballs
 
 # set nextcloud version and path
