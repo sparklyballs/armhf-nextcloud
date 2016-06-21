@@ -1,4 +1,4 @@
-FROM sparklyballs/base-nginx-armhf
+FROM sparklyballs/base-nginx-alpine
 MAINTAINER sparklyballs
 
 # set nextcloud version and path
@@ -15,22 +15,10 @@ RUN \
 	g++ \
 	gcc \
 	make \
-	libmemcached-dev \
 	php5-dev \
 	re2c \
 	samba-dev \
 	zlib-dev && \
-
-# fetch php memcached source
- git clone https://github.com/php-memcached-dev/php-memcached /tmp/memcached && \
-
-# compile memcached
- cd /tmp/memcached && \
-	phpize && \
-	./configure \
-		--disable-memcached-sasl && \
-	make && \
-	make install && \
 
 # fetch php smbclient source
  git clone git://github.com/eduardok/libsmbclient-php.git /tmp/smbclient && \
@@ -54,7 +42,6 @@ RUN \
  apk add --no-cache \
 	curl \
 	ffmpeg \
-	libmemcached \
 	libxml2 \
 	php5-apcu \
 	php5-bz2 \
@@ -84,12 +71,13 @@ RUN \
 	php5-zlib \
 	samba \
 	tar \
-	unzip
+	unzip && \
+ apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/testing \
+	php5-memcached
 
 # configure php extensions
 RUN \
- echo "extension="smbclient.so"" >> /etc/php5/php.ini && \
- echo "extension="memcached.so"" >> /etc/php5/php.ini
+ echo "extension="smbclient.so"" >> /etc/php5/php.ini
 
 # configure php for nextcloud
 RUN \
