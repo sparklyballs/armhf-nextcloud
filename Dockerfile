@@ -2,7 +2,7 @@ FROM sparklyballs/base-nginx-armhf
 MAINTAINER sparklyballs
 
 # set nextcloud version and path
-ENV NEXTCLOUD_VER="9.0.50"
+ENV NEXTCLOUD_VER="9.0.51"
 ENV WWW_ROOT="/config/www"
 ENV NEXTCLOUD_PATH="${WWW_ROOT}/nextcloud"
 
